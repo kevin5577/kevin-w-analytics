@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kevin W Analytics — Analytics &amp; Paid Media Consulting</title>
+<meta name="description" content="Analytics implementation, tracking audits, and paid media measurement consulting. GA4, GTM, Adobe Analytics, and ad spend attribution done right.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-base:#0D1B1E;
+    --bg-panel:#142B2F;
+    --bg-panel-hover:#173036;
+    --mint:#6EE7B7;
+    --amber:#F4A340;
+    --text-primary:#EDEFEA;
+    --text-muted:#8FA6A3;
+    --hairline:rgba(110,231,183,0.16);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg-base);
+    color:var(--text-primary);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+
+  .display{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+  }
+
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    padding:28px 0;
+  }
+  header .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .brand{
+    font-size:1.2rem;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  .brand .dot{
+    color:var(--mint);
+  }
+  nav a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.8rem;
+    text-decoration:none;
+    color:var(--text-muted);
+    border:1px solid var(--hairline);
+    padding:8px 16px;
+    border-radius:2px;
+    transition:color 0.2s ease, border-color 0.2s ease;
+  }
+  nav a:hover{
+    color:var(--mint);
+    border-color:var(--mint);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:64px 0 40px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.05;
+    max-width:760px;
+  }
+  .hero h1 .accent{
+    color:var(--mint);
+  }
+  .hero p.sub{
+    margin-top:20px;
+    max-width:540px;
+    color:var(--text-muted);
+    font-size:1.05rem;
+  }
+  .hero .cta-row{
+    margin-top:32px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem;
+    padding:13px 22px;
+    border-radius:2px;
+    text-decoration:none;
+    transition:transform 0.15s ease, opacity 0.15s ease;
+  }
+  .btn-primary{
+    background:var(--amber);
+    color:#1A1308;
+    font-weight:500;
+  }
+  .btn-primary:hover{
+    transform:translateY(-1px);
+    opacity:0.92;
+  }
+  .btn-ghost{
+    border:1px solid var(--hairline);
+    color:var(--text-muted);
+  }
+  .btn-ghost:hover{
+    color:var(--mint);
+    border-color:var(--mint);
+  }
+
+  /* ---------- Signature: live event stream ---------- */
+  .stream{
+    margin-top:56px;
+    border:1px solid var(--hairline);
+    border-radius:3px;
+    background:var(--bg-panel);
+    overflow:hidden;
+  }
+  .stream-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 18px;
+    border-bottom:1px solid var(--hairline);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .stream-label .pulse{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--mint);
+    box-shadow:0 0 0 0 rgba(110,231,183,0.5);
+    animation:pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(110,231,183,0.45);}
+    70%{box-shadow:0 0 0 7px rgba(110,231,183,0);}
+    100%{box-shadow:0 0 0 0 rgba(110,231,183,0);}
+  }
+  .ticker-viewport{
+    overflow:hidden;
+    padding:16px 0;
+  }
+  .ticker-track{
+    display:flex;
+    gap:14px;
+    width:max-content;
+    animation:scroll 32s linear infinite;
+  }
+  @keyframes scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  .chip{
+    flex:none;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:var(--text-muted);
+    border:1px solid var(--hairline);
+    border-radius:2px;
+    padding:8px 14px;
+    white-space:nowrap;
+  }
+  .chip .src{color:var(--text-primary);}
+  .chip .ok{color:var(--mint);}
+  .chip .warn{color:var(--amber);}
+  .chip-dot{
+    width:6px;height:6px;border-radius:50%;
+  }
+  .chip-dot.ok-dot{background:var(--mint);}
+  .chip-dot.warn-dot{background:var(--amber);}
+
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{animation:none;}
+    .stream-label .pulse{animation:none;}
+  }
+
+  /* ---------- Services ---------- */
+  .services{
+    padding:84px 0 40px;
+  }
+  .section-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.75rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--mint);
+    margin-bottom:14px;
+  }
+  .services h2{
+    font-size:1.9rem;
+    max-width:520px;
+    margin-bottom:40px;
+  }
+  .panels{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+  }
+  @media (max-width:760px){
+    .panels{grid-template-columns:1fr;}
+  }
+  .panel{
+    background:var(--bg-panel);
+    border:1px solid var(--hairline);
+    border-radius:3px;
+    padding:30px 28px;
+    transition:background 0.2s ease;
+  }
+  .panel:hover{
+    background:var(--bg-panel-hover);
+  }
+  .panel .scope{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:16px;
+  }
+  .panel h3{
+    font-size:1.25rem;
+    margin-bottom:12px;
+  }
+  .panel p{
+    color:var(--text-muted);
+    font-size:0.95rem;
+  }
+  .panel .stack{
+    margin-top:18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    color:var(--text-muted);
+    border:1px solid var(--hairline);
+    padding:4px 9px;
+    border-radius:2px;
+  }
+
+  /* ---------- About strip ---------- */
+  .about{
+    padding:60px 0;
+    border-top:1px solid var(--hairline);
+    border-bottom:1px solid var(--hairline);
+    margin-top:60px;
+  }
+  .about h2{
+    font-size:1.7rem;
+    max-width:600px;
+    margin-bottom:20px;
+  }
+  .about p{
+    max-width:680px;
+    color:var(--text-muted);
+    font-size:1.02rem;
+  }
+
+  /* ---------- Contact ---------- */
+  .contact{
+    padding:84px 0 60px;
+    text-align:left;
+  }
+  .contact h2{
+    font-size:2rem;
+    max-width:460px;
+  }
+  .contact p.sub{
+    margin-top:14px;
+    color:var(--text-muted);
+    max-width:460px;
+  }
+  .contact .cta-row{
+    margin-top:30px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  footer{
+    padding:26px 0 40px;
+    color:var(--text-muted);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.75rem;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand display" style="display:flex;align-items:center;gap:14px;">
+      <svg viewBox="0 0 52 52" width="48" height="48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kevin W Analytics logo" style="flex:none;">
+        <defs>
+          <clipPath id="circleClip"><circle cx="26" cy="26" r="26"/></clipPath>
+        </defs>
+        <circle cx="26" cy="26" r="25.5" fill="#142B2F" stroke="#6EE7B7" stroke-opacity="0.4" stroke-width="1"/>
+        <g clip-path="url(#circleClip)">
+          <rect x="8" y="36" width="5" height="10" fill="#8FA6A3" opacity="0.22"/>
+          <rect x="15" y="30" width="5" height="16" fill="#8FA6A3" opacity="0.22"/>
+          <rect x="22" y="24" width="5" height="22" fill="#8FA6A3" opacity="0.22"/>
+          <rect x="29" y="18" width="5" height="28" fill="#8FA6A3" opacity="0.22"/>
+          <rect x="36" y="12" width="5" height="34" fill="#8FA6A3" opacity="0.22"/>
+        </g>
+        <polyline points="14,40 21,31 29,21 37,12" fill="none" stroke="#6EE7B7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="14" cy="40" r="2.4" fill="#6EE7B7"/>
+        <circle cx="21" cy="31" r="2.4" fill="#6EE7B7"/>
+        <circle cx="29" cy="21" r="2.4" fill="#6EE7B7"/>
+        <circle cx="37" cy="12" r="3.2" fill="#F4A340"/>
+      </svg>
+      <span>Kevin W <span class="dot">/</span> Analytics</span>
+    </div>
+    <nav><a href="#contact">Contact</a></nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 class="display">Make your tracking <span class="accent">trustworthy</span>, and your ad spend <span class="accent">accountable</span>.</h1>
+    <p class="sub">Independent analytics and paid media consulting. I make sure the numbers in your reports are accurate, and that your ad spend is actually paying off.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:kevin.t.wiersma@gmail.com" data-email="kevin.t.wiersma@gmail.com" onclick="return handleEmailClick(event, this)">Email me</a>
+      <a class="btn btn-ghost" href="#services">See what I do</a>
+    </div>
+
+    <div class="stream">
+      <div class="stream-label"><span class="pulse"></span> Events as they're tracked</div>
+      <div class="ticker-viewport">
+        <div class="ticker-track" id="tickerTrack">
+          <!-- repeated twice for seamless loop -->
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">GA4</span> — purchase <span class="ok">confirmed</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">GTM</span> — checkout <span class="ok">tracked</span></div>
+          <div class="chip"><span class="chip-dot warn-dot"></span><span class="src">Meta</span> — duplicate purchase <span class="warn">flagged</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">Google Ads</span> — $84.20 conversion <span class="ok">recorded</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">Adobe</span> — purchase event <span class="ok">sent</span></div>
+          <div class="chip"><span class="chip-dot warn-dot"></span><span class="src">GTM</span> — missing tracking data <span class="warn">flagged</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">GA4</span> — add to cart <span class="ok">confirmed</span></div>
+
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">GA4</span> — purchase <span class="ok">confirmed</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">GTM</span> — checkout <span class="ok">tracked</span></div>
+          <div class="chip"><span class="chip-dot warn-dot"></span><span class="src">Meta</span> — duplicate purchase <span class="warn">flagged</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">Google Ads</span> — $84.20 conversion <span class="ok">recorded</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">Adobe</span> — purchase event <span class="ok">sent</span></div>
+          <div class="chip"><span class="chip-dot warn-dot"></span><span class="src">GTM</span> — missing tracking data <span class="warn">flagged</span></div>
+          <div class="chip"><span class="chip-dot ok-dot"></span><span class="src">GA4</span> — add to cart <span class="ok">confirmed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <div class="section-eyebrow">About</div>
+    <h2 class="display">Six years agency-side, now working for you directly.</h2>
+    <p>I spent six years inside a large agency, running analytics and paid media for everything from e-commerce brands to B2B SaaS companies — so I've seen what breaks, what gets ignored, and what actually moves the needle across a lot of different accounts. Along the way, I got tired of relying on other people's tools to catch tracking problems, so I started building my own. That same habit, going one layer deeper than most consultants will, is what you get working with me directly: one person handling your tracking, your paid media, and your reporting, instead of splitting that across three vendors who don't talk to each other.</p>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-eyebrow">What I do</div>
+    <h2 class="display">Four ways I make your data work harder.</h2>
+    <div class="panels">
+      <div class="panel">
+        <div class="scope">Scope — Setup &amp; Accuracy</div>
+        <h3 class="display">Analytics setup &amp; tracking checkups</h3>
+        <p>I check your Google Analytics, Tag Manager, and Adobe Analytics setup for gaps, fix what's broken, and make sure every important action on your site is actually being counted — so the numbers in your reports are numbers you can trust.</p>
+        <div class="stack">
+          <span class="tag">GA4</span>
+          <span class="tag">GTM</span>
+          <span class="tag">Adobe Analytics</span>
+          <span class="tag">Accurate reporting</span>
+          <span class="tag">Fewer bugs</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="scope">Scope — Paid Media</div>
+        <h3 class="display">Paid media performance &amp; ROI</h3>
+        <p>I track your campaigns across paid channels so you know which ads are actually driving sales, and which ones are just costing you money.</p>
+        <div class="stack">
+          <span class="tag">Which ads work</span>
+          <span class="tag">Conversion tracking</span>
+          <span class="tag">Spend efficiency</span>
+          <span class="tag">Reporting</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="scope">Scope — Ongoing Partnership</div>
+        <h3 class="display">Dashboards, journeys &amp; customer insights</h3>
+        <p>I map how your customers actually move through your site, build out useful groupings of your audience, and keep your dashboards updated — so you get the insight without having to manage another tool yourself.</p>
+        <div class="stack">
+          <span class="tag">Customer journeys</span>
+          <span class="tag">Audience insights</span>
+          <span class="tag">Live dashboards</span>
+          <span class="tag">Done for you</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="scope">Scope — AI &amp; Data</div>
+        <h3 class="display">AI research &amp; smarter targeting</h3>
+        <p>I use AI tools to dig up data your ad platforms don't show you on their own, helping you understand who your real customers are and feeding that back into better-performing campaigns.</p>
+        <div class="stack">
+          <span class="tag">AI research</span>
+          <span class="tag">Automated insights</span>
+          <span class="tag">Customer insights</span>
+          <span class="tag">More data sources</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2 class="display">Let's look at your tracking.</h2>
+    <p class="sub">Send a note with what you're working with — GA4, GTM, Adobe, paid channels — and I'll tell you honestly whether it's a quick fix or a deeper rebuild.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:kevin.t.wiersma@gmail.com" data-email="kevin.t.wiersma@gmail.com" onclick="return handleEmailClick(event, this)">kevin.t.wiersma@gmail.com</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/kevin-wiersma-63282910b/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Kevin W Analytics</span>
+    <span>Independent consulting</span>
+  </div>
+</footer>
+
+<script>
+  function handleEmailClick(e, el){
+    var email = el.getAttribute('data-email');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      e.preventDefault();
+      navigator.clipboard.writeText(email).then(function(){
+        var original = el.textContent;
+        el.textContent = 'Copied!';
+        setTimeout(function(){ el.textContent = original; }, 1800);
+      });
+      return false;
+    }
+    // Clipboard API unavailable — let the mailto link behave normally.
+    return true;
+  }
+</script>
+
+</body>
+</html>
